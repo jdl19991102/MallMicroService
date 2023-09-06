@@ -1,14 +1,16 @@
+using Ordering.Api.Configurations;
 using Services.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
-builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwagger();
 
 var app = builder.Build();
+
+app.UseServiceDefaults();
 
 if (app.Environment.IsDevelopment())
 {

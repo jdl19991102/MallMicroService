@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Ordering.Api.Controllers
 {
+    /// <summary>
+    /// 这是一个天气预报控制器
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
@@ -18,6 +21,10 @@ namespace Ordering.Api.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// 获取天气预报
+        /// </summary>
+        /// <returns></returns>
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
