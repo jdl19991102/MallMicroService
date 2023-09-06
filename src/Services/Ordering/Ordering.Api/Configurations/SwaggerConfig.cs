@@ -9,6 +9,8 @@ namespace Ordering.Api.Configurations
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
+            services.AddEndpointsApiExplorer();
+
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo
