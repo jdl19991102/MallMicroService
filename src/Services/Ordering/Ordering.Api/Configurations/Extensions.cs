@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Ordering.Infrastructure.IoC;
+using Orders.Application.AutoMapper;
 using Orders.Infrastructure.Context;
 using System.Reflection;
 
@@ -61,6 +63,21 @@ namespace Ordering.Api.Configurations
             return services;
         }
 
+
+        public static void AddDependencyInjectionConfiguration(this IServiceCollection services)
+        {
+            if (services == null) throw new ArgumentNullException(nameof(services));
+
+            NativeInjectorBootStrapper.RegisterServices(services);
+        }
+
+
+        public static void AddAutoMapperConfiguration(this IServiceCollection services)
+        {
+            if (services == null) throw new ArgumentNullException(nameof(services));
+
+            services.AddAutoMapper(typeof(DomainToViewModelMappingProfile));
+        }
 
 
         public static void UseMySwagger(this WebApplication app)

@@ -7,6 +7,8 @@ builder.AddServiceDefaults();
 
 builder.Services.AddSwagger();
 builder.Services.AddDbContexts(builder.Configuration);
+builder.Services.AddDependencyInjectionConfiguration();
+builder.Services.AddAutoMapperConfiguration();
 
 var app = builder.Build();
 
