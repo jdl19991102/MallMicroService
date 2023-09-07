@@ -6,16 +6,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
 
 builder.Services.AddSwagger();
+builder.Services.AddDbContexts(builder.Configuration);
 
 var app = builder.Build();
 
 app.UseServiceDefaults();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseMySwagger();
 
 app.UseHttpsRedirection();
 
