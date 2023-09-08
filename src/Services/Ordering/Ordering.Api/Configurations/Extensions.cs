@@ -2,6 +2,7 @@
 using Microsoft.OpenApi.Models;
 using Ordering.Infrastructure.IoC;
 using Orders.Application.AutoMapper;
+using Orders.Application.ViewModel;
 using Orders.Infrastructure.Context;
 using System.Reflection;
 
@@ -40,6 +41,10 @@ namespace Ordering.Api.Configurations
                 Console.WriteLine("xml文件的路径为:{0}", Path.Combine(AppContext.BaseDirectory, xmlFilename));
                 // 第二个参数true表示注释文件包含了控制器的注释
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename), true);
+
+                var xmlViewModelFilename = $"{typeof(OrdersViewModel).Assembly.GetName().Name}.xml";
+                Console.WriteLine("ViewModel的xml文件的路径为:{0}", Path.Combine(AppContext.BaseDirectory, xmlViewModelFilename));
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlViewModelFilename));
             });
         }
 
@@ -48,7 +53,7 @@ namespace Ordering.Api.Configurations
         {
             services.AddDbContext<OrderingContext>(options =>
             {
-                options.UseSqlServer(configuration["ConnectionString"],
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
                     sqlServerOptionsAction: sqlOptions =>
                     {
                         // 指定数据库迁移的程序集名称，以便在执行迁移时使用正确的程序集。

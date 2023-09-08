@@ -93,7 +93,7 @@ namespace Orders.Infrastructure.Context
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            var currentTime = DateTime.UtcNow;
+            var currentTime = DateTime.Now;
 
             var changedEntries = ChangeTracker.Entries()
                 .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);

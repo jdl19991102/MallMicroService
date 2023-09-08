@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Orders.Application.DTO;
 using Orders.Application.Interfaces;
 using Orders.Application.ViewModel;
 
@@ -23,10 +24,22 @@ namespace Ordering.Api.Controllers
         /// 获取所有的订单信息
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
-        public async Task<IEnumerable<OrdersViewModel>> GetAllOrders()
+        [HttpPost]
+        public async Task<IEnumerable<OrdersViewModel>> GetAllOrders([FromBody] GetAllOrdersDTO allOrdersDto)
         {
-            var result = await _orderService.GetAllOrders();
+            var result = await _orderService.GetAllOrders(allOrdersDto);
+            return result;
+        }
+
+        /// <summary>
+        /// 新增一条订单信息
+        /// </summary>
+        /// <param name="createOrderDto"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<bool> CreateOrder([FromBody] CreateOrderDTO createOrderDto)
+        {
+            var result = await _orderService.CreateOrder(createOrderDto);
             return result;
         }
     }
