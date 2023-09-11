@@ -12,7 +12,6 @@
 
 	<ItemGroup>
 	  <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.18" />
-	  <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 	</ItemGroup>
 
 	<ItemGroup>
