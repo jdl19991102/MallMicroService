@@ -45,6 +45,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.FunctionalTest"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.Infrastructure.IoC", "Ordering.Infrastructure.IoC\Ordering.Infrastructure.IoC.csproj", "{CFC992F4-2A4B-44EE-A40A-6CA611C84373}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Catalog", "Catalog", "{1838CBCE-2D86-447A-AD74-B3CBAED5BEB4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -119,6 +121,7 @@ Global
 		{88FD16A7-6D0B-4DD3-9AEC-EB0E69E3E244} = {DB29BD60-4123-4D76-9548-D16ABB6EE045}
 		{B7E33F55-57EB-4E9F-B598-F2D4D654B6E5} = {88FD16A7-6D0B-4DD3-9AEC-EB0E69E3E244}
 		{CFC992F4-2A4B-44EE-A40A-6CA611C84373} = {FB588F6F-9023-4C89-BA81-458F8DF021B6}
+		{1838CBCE-2D86-447A-AD74-B3CBAED5BEB4} = {0859A6D0-4E52-463E-BBAB-1E6187783848}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4913890C-9370-41B7-8814-102BB28F7B42}
