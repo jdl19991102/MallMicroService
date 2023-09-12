@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Orders.Application.DTO;
+using Orders.Domain.Command;
 using Orders.Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace Orders.Application.AutoMapper
     {
         public ViewModelToDomainMappingProfile()
         {
+            CreateMap<CreateOrderDTO, CreateOrderCommand>();
             //CreateMap<CreateOrderDTO, OrdersInfo>();
         }
     }

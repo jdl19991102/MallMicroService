@@ -57,6 +57,11 @@ namespace Orders.Infrastructure.Repository
         public void Delete(TEntity entity)
         {
             DbSet.Remove(entity);
-        }  
+        }
+
+        public async Task<int> SaveChangesAsync()
+        {
+            return await Db.SaveChangesAsync();
+        }
     }
 }

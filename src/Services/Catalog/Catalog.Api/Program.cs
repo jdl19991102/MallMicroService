@@ -4,8 +4,11 @@ using Services.Common;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
-builder.Services.AddSwagger();
-builder.Services.AddDbContexts(builder.Configuration);
+
+var services = builder.Services;
+
+services.AddSwagger();
+services.AddDbContexts(builder.Configuration);
 
 var app = builder.Build();
 

@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using MediatR;
 using Orders.Application.DTO;
 using Orders.Application.Interfaces;
 using Orders.Application.ViewModel;
+using Orders.Domain.Command;
 using Orders.Domain.Interfaces;
 using Orders.Domain.Models;
 using System;
@@ -16,32 +18,19 @@ namespace Orders.Application.Services
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IMapper _mapper;
-
-        public OrderService(IOrderRepository orderRepository, IMapper mapper)
+        private readonly IMediator _mediator;
+        
+        public OrderService(IOrderRepository orderRepository, IMapper mapper, IMediator mediator)
         {
             _orderRepository = orderRepository;
             _mapper = mapper;
+            _mediator = mediator;
         }
 
         public async Task<bool> CreateOrder(CreateOrderDTO createOrderDto)
         {
-            // 将createOrderDto 中关于订单的信息抽出来赋值给新对象order
-            var order = new OrdersInfo
-            {
-                OrderName = createOrderDto.OrderName,
-                Price = createOrderDto.Price,
-                CustomerName = createOrderDto.CustomerName
-            };
-
-            // 先新增订单主表
-             _orderRepository.CreateOrder(order);
-
-
-
-
-            //var order = _mapper.Map<OrdersInfo>(createOrderDto);
-            //return  await _orderRepository.CreateOrder(order);
-
+            var createOrderCommand = _mapper.Map<CreateOrderCommand>(createOrderDto);
+            var createOrderResult = await _mediator.Send(createOrderCommand);
             return true;
         }
 

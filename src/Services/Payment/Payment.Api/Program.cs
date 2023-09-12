@@ -1,4 +1,4 @@
-using Ordering.Api.Configurations;
+using Payment.Api.Configurations;
 using Services.Common;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,12 +9,6 @@ var services = builder.Services;
 
 services.AddSwagger();
 services.AddDbContexts(builder.Configuration);
-services.AddDependencyInjectionConfiguration();
-services.AddAutoMapperConfiguration();
-services.AddMediatR(cfg =>
-{
-    cfg.RegisterServicesFromAssembly(typeof(Program).Assembly);
-});
 
 var app = builder.Build();
 
