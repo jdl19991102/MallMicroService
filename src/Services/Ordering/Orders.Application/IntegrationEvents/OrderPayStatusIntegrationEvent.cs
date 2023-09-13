@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EventBus.Events;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,8 @@ namespace Orders.Application.IntegrationEvents
     public class OrderPayStatusIntegrationEvent : IntegrationEvent
     {
         public int OrderId { get; set; }
-        public int PayStatus { get; set; }
+
+        public OrderPayStatusIntegrationEvent(int orderId)
+            => OrderId = orderId;
     }
 }

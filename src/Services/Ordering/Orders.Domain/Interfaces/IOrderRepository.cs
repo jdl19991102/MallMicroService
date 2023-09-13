@@ -16,5 +16,7 @@ namespace Orders.Domain.Interfaces
         void CreateOrder(OrdersInfo order);
 
         Task<IEnumerable<OrdersInfo>> GetAllOrders(Expression<Func<OrdersInfo, bool>> expression);
+
+        Task<OrdersInfo?> GetOrderByUniqueId(string orderName);
     }
 }

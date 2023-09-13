@@ -26,5 +26,10 @@ namespace Orders.Infrastructure.Repository
         {
             return await SelectListAsync(expression);
         }
+
+        public async Task<OrdersInfo?> GetOrderByUniqueId(string orderName)
+        {
+            return await SelectOneAsync(x => x.OrderName == orderName);
+        }
     }
 }

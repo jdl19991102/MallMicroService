@@ -11,5 +11,6 @@ namespace Orders.Domain.Models
         public decimal Price { get; set; }
         public DateTime CreateTime { get; set; }
         public DateTime UpdateTime { get; set; }
+        public string OrderUniqueId { get; set; } = null!;
     }
 }

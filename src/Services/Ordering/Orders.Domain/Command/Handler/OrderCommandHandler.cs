@@ -32,7 +32,8 @@ namespace Orders.Domain.Command.Handler
                     {
                         OrderName = request.OrderName,
                         CustomerName = request.CustomerName,
-                        Price = request.Price
+                        Price = request.Price,
+                        OrderUniqueId = Guid.NewGuid().ToString("N")
                     };
                     _orderRepository.CreateOrder(order);
                     await _orderRepository.SaveChangesAsync();
@@ -45,11 +46,6 @@ namespace Orders.Domain.Command.Handler
                     _ordersDetailRepository.CreateOrdersDetailRange(request.OrderDetails);
                     await _ordersDetailRepository.SaveChangesAsync();
 
-
-                    // 发送集成事件
-                    // TODO 这里应该是发送集成事件，通知其他微服务，订单已经创建成功，然后扣减库存
-
-
                     // 提交事务
                     transactionScope.Complete();
                 }
@@ -58,6 +54,7 @@ namespace Orders.Domain.Command.Handler
                     // 事务回滚，任何一个步骤出现异常都会导致事务回滚
                     // 这样保证了订单和订单详情要么一起成功，要么一起失败
                     //transactionScope.Dispose(); // 可以不写，using会自动释放
+                    return false;
                     throw;
                 }
             }
