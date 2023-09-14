@@ -18,6 +18,6 @@ namespace Orders.Domain.Interfaces
         Task<IEnumerable<OrdersInfo>> GetAllOrders(Expression<Func<OrdersInfo, bool>> expression);
 
         Task<OrdersInfo?> GetOrderByOrderName(string orderName);
-        Task<int> SaveChangesAsync();
+        //Task<int> SaveChangesAsync();
     }
 }

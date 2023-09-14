@@ -32,9 +32,9 @@ namespace Orders.Infrastructure.Repository
             return await SelectOneAsync(x => x.OrderName == orderName);
         }
 
-        public async Task<int> SaveChangesAsync()
-        {
-            return await Db.SaveChangesAsync();
-        }
+        //public async Task<int> SaveChangesAsync()
+        //{
+        //    return await Db.SaveChangesAsync();
+        //}
     }
 }

@@ -48,8 +48,6 @@ namespace Orders.Application.Services
                 }               
                 else
                 {
-                    await Console.Out.WriteLineAsync("测试看会不会进来");
-
                     // 发送集成事件
                     var orderCreatedEvent = new OrderPayStatusIntegrationEvent(order.Id);
                     _eventBus.Publish(orderCreatedEvent);
