@@ -41,13 +41,15 @@ namespace Orders.Application.Services
             // 2. 订单创建成功后，发布订单创建成功的事件
             if (createOrderResult)
             {
-                var order = await _orderRepository.GetOrderByUniqueId(createOrderDto.OrderName!);
+                var order = await _orderRepository.GetOrderByOrderName(createOrderDto.OrderName!);
                 if (order == null)
                 {
                     throw new OrderingDomainException(3, "订单创建成功之后没有查到数据");
-                }
+                }               
                 else
                 {
+                    await Console.Out.WriteLineAsync("测试看会不会进来");
+
                     // 发送集成事件
                     var orderCreatedEvent = new OrderPayStatusIntegrationEvent(order.Id);
                     _eventBus.Publish(orderCreatedEvent);

@@ -34,7 +34,5 @@ namespace Orders.Domain.Interfaces
 
         //// 实现事务提交
         //Task<bool> SaveAsync();
-
-        Task<int> SaveChangesAsync();
     }
 }

@@ -95,6 +95,7 @@ namespace EventBus.RabbitMQ
         /// <param name="event">事件模型</param>
         public void Publish(IntegrationEvent @event)
         {
+            _logger.LogInformation("Publishing event: {EventId} ({EventName})", @event.Id, @event.GetType().Name);
             if (!_persistentConnection.IsConnected)
             {
                 _persistentConnection.TryConnect();

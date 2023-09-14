@@ -15,6 +15,7 @@ namespace Orders.Application.AutoMapper
         public ViewModelToDomainMappingProfile()
         {
             CreateMap<CreateOrderDTO, CreateOrderCommand>();
+            CreateMap<OrderDetailsDTO, OrdersDetail>();
             //CreateMap<CreateOrderDTO, OrdersInfo>();
         }
     }

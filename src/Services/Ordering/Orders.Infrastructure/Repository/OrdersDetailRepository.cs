@@ -19,5 +19,10 @@ namespace Orders.Infrastructure.Repository
         {
             InsertRange(ordersDetails);
         }
+
+        public async Task<int> SaveChangesAsync()
+        {
+            return await Db.SaveChangesAsync();
+        }
     }
 }

@@ -14,26 +14,50 @@ namespace Payment.Api.Controllers
     public class PaymentController : ControllerBase
     {
         private readonly PaymentsContext _context;
+        private readonly ILogger<PaymentController> _logger;
 
-        public PaymentController(PaymentsContext context)
+        public PaymentController(PaymentsContext context, ILogger<PaymentController> logger)
         {
             _context = context;
-            context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            _logger = logger;
         }
+
 
         /// <summary>
         /// 新增支付信息
         /// </summary>
-        /// <param name="payment"></param>
-        /// <returns></returns>
+        /// <param name="OrderId">订单Id</param>
+        /// <returns>新增的订单数据</returns>
         [HttpPost]
-        public async Task<PaymentInfo> CreatePayment(PaymentInfo payment)
+        public async Task<PaymentInfo> CreatePayment(int OrderId)
         {
-            _context.PaymentInfos.Add(payment);
+            var payment = new PaymentInfo();
+            payment.OrderId = OrderId;
             payment.PaymentId = Guid.NewGuid().ToString("N");
             payment.PaymentDate = DateTime.Now;
+            _context.PaymentInfos.Add(payment);
             await _context.SaveChangesAsync();
             return payment;
+        }
+
+        /// <summary>
+        /// 更新支付状态
+        /// </summary>
+        /// <param name="paymentId"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<bool> UpdatePaymentStatus(string paymentId, int status)
+        {
+            var payment = await _context.PaymentInfos.FirstOrDefaultAsync(x => x.PaymentId == paymentId);
+            if (payment == null)
+            {
+                _logger.LogInformation("没有找到对应的支付信息");
+                return false;
+            }
+            payment.PaymentStatus = status;
+            _context.PaymentInfos.Update(payment);
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }

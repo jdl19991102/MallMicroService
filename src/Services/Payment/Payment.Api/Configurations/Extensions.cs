@@ -64,6 +64,18 @@ namespace Payment.Api.Configurations
             return services;
         }
 
+        public static void UsePaymentService(this WebApplication app)
+        {
+            UseMySwagger(app);
+
+            app.UseHttpsRedirection();
+
+            app.UseAuthorization();
+
+            app.MapControllers();
+
+        }
+
         public static void UseMySwagger(this WebApplication app)
         {
             if (app == null) throw new ArgumentNullException(nameof(app));

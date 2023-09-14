@@ -54,7 +54,6 @@ namespace Orders.Domain.Command.Handler
                     // 事务回滚，任何一个步骤出现异常都会导致事务回滚
                     // 这样保证了订单和订单详情要么一起成功，要么一起失败
                     //transactionScope.Dispose(); // 可以不写，using会自动释放
-                    return false;
                     throw;
                 }
             }

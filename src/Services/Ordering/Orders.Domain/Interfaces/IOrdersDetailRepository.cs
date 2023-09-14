@@ -10,5 +10,6 @@ namespace Orders.Domain.Interfaces
     public interface IOrdersDetailRepository : IRepository<OrdersDetail>
     {
         void CreateOrdersDetailRange(IEnumerable<OrdersDetail> ordersDetails);
+        Task<int> SaveChangesAsync();
     }
 }

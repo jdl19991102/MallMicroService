@@ -61,7 +61,7 @@ namespace Ordering.Api.Configurations
                         sqlOptions.MigrationsAssembly(typeof(Program).Assembly.FullName);
                         // maxRetryCount表示最大重试次数，maxRetryDelay表示每次重试之间的最大延迟时间间隔，
                         // errorNumbersToAdd表示要添加到重试策略的SQL Server错误号码列表（如果为null，则使用默认的SQL Server错误号码列表）
-                        sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                        //sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
                     });
             });
 

@@ -1,6 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using Orders.Application.Interfaces;
 using Orders.Application.Services;
+using Orders.Domain.Command;
+using Orders.Domain.Command.Handler;
 using Orders.Domain.Interfaces;
 using Orders.Infrastructure.Repository;
 using System;
@@ -24,6 +27,10 @@ namespace Ordering.Infrastructure.IoC
 
             // Infra
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrdersDetailRepository, OrdersDetailRepository>();
+
+            // Domain
+            services.AddScoped<IRequestHandler<CreateOrderCommand, bool>, OrderCommandHandler>();
         }
     }
 }

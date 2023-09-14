@@ -58,10 +58,5 @@ namespace Orders.Infrastructure.Repository
         {
             DbSet.Remove(entity);
         }
-
-        public async Task<int> SaveChangesAsync()
-        {
-            return await Db.SaveChangesAsync();
-        }
     }
 }

@@ -56,5 +56,28 @@ namespace Payment.Api.Infrastructure
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            var currentTime = DateTime.Now;
+
+            var changedEntries = ChangeTracker.Entries()
+                .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
+
+            foreach (var entry in changedEntries)
+            {
+                if (entry.State == EntityState.Added)
+                {
+                    // 设置创建时间
+                    entry.Property("CreateTime").CurrentValue = currentTime;
+                }
+                // 设置更新时间
+                Entry(entry.Entity).Property("UpdateTime").CurrentValue = currentTime;
+                //entity.Property("UpdateTime").CurrentValue = currentTime; // 两种写法都可以
+            }
+
+            return await base.SaveChangesAsync(cancellationToken);
+        }
     }
 }
