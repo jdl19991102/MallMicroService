@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 using Services.Common.ServiceExtensions;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ namespace Services.Common
     {
         public static WebApplicationBuilder AddServiceDefaults(this WebApplicationBuilder builder)
         {
+            // Add the logs
+            builder.AddLogs();
 
             // Add the controllers filter
             builder.Services.AddFiltersConfiguration();
@@ -34,6 +37,8 @@ namespace Services.Common
 
         public static WebApplication UseServiceDefaults(this WebApplication app)
         {
+            app.UseSerilogRequestLogging();
+
             app.UseHealthChecks("/health");
 
             return app;
