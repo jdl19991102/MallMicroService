@@ -23,6 +23,7 @@ namespace Ordering.Infrastructure.IoC
         {
             // Application
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IProductClient, ProductClient>();
 
 
             // Infra

@@ -23,17 +23,27 @@ namespace Orders.Application.Services
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
         private readonly IEventBus _eventBus;
+        private readonly IProductClient _productClient;
 
-        public OrderService(IOrderRepository orderRepository, IMapper mapper, IMediator mediator, IEventBus eventBus)
+
+        public OrderService(IOrderRepository orderRepository, IMapper mapper, IMediator mediator, IEventBus eventBus, IProductClient productClient)
         {
             _orderRepository = orderRepository;
             _mapper = mapper;
             _mediator = mediator;
             _eventBus = eventBus;
+            _productClient = productClient;
         }
 
         public async Task<bool> CreateOrder(CreateOrderDTO createOrderDto)
         {
+            // 1. 先扣减库存
+            // 取出CreateOrderDTO下的OrderDetails集合，然后遍历集合，取出每个OrderDetails的CatalogItemId和Quantity
+
+
+
+            var decreaseStockResult = await _productClient.DecreaseStock(createOrderDto.CatalogItemId, createOrderDto.Quantity);
+
             // 1. 先创建订单
             var createOrderCommand = _mapper.Map<CreateOrderCommand>(createOrderDto);
             var createOrderResult = await _mediator.Send(createOrderCommand);
@@ -45,13 +55,13 @@ namespace Orders.Application.Services
                 if (order == null)
                 {
                     throw new OrderingDomainException(3, "订单创建成功之后没有查到数据");
-                }               
+                }
                 else
                 {
                     // 发送集成事件
                     var orderCreatedEvent = new OrderPayStatusIntegrationEvent(order.Id);
                     _eventBus.Publish(orderCreatedEvent);
-                }            
+                }
             }
             return true;
         }
