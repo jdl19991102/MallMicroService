@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Orders.Application.DTO;
 using Orders.Application.Interfaces;
 using RestSharp;
@@ -22,35 +23,21 @@ namespace Orders.Application.Services
             _logger = logger;
         }
 
-        //public async Task<bool> DecreaseStock(int catalogItemId, int quantity)
-        //{
-        //    var request = new RestRequest($"/CatalogItem/DecreaseStock", Method.Post);
-        //    // 发送一个请求格式为multipart/form-data的请求
-        //    request.AddHeader("Content-Type", "multipart/form-data");
-        //    request.AddParameter("catalogItemId", catalogItemId);
-        //    request.AddParameter("quantity", quantity);
-
-        //    var response = await _client.ExecuteAsync(request);
-        //    if (response.IsSuccessful)
-        //    {
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        _logger.LogError($"调用商品服务扣减库存失败，错误信息：{response.ErrorMessage}");
-        //        return false;
-        //    }
-        //}
-
         public async Task<bool> DecreaseStock(List<DecreaseStockDTO> decreases)
         {
-            var request = new RestRequest($"/CatalogItem/DecreaseStock", Method.Post);
-            // 发送Json格式的请求
+            var request = new RestRequest("CatalogItem/DecreaseStock", Method.Post);
             request.AddJsonBody(decreases);
             var response = await _client.ExecuteAsync(request);
             if (response.IsSuccessful)
             {
-                return true;
+                var content = JsonConvert.DeserializeObject<ApiResponse>(response.Content!);
+                var result = content!.Data;
+                if (result == null)
+                {
+                    return false;
+                }
+                var flag = Convert.ToBoolean(result.ToString());
+                return flag;
             }
             else
             {

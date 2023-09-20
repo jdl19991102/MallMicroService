@@ -37,18 +37,33 @@ namespace Orders.Application.Services
 
         public async Task<bool> CreateOrder(CreateOrderDTO createOrderDto)
         {
-            // 1. 先扣减库存
-            // 取出CreateOrderDTO下的OrderDetails集合，然后遍历集合，取出每个OrderDetails的CatalogItemId和Quantity
+            if(createOrderDto == null)
+            {
+                throw new OrderingDomainException(3, "创建订单时CreateOrderDTO为空");
+            }
+            
+            if(createOrderDto.OrderDetails == null || !createOrderDto.OrderDetails.Any())
+            {
+                throw new OrderingDomainException(3, "创建订单时OrderDetails为空");
+            }
 
+            // 1. 先扣减库存          
+            List<DecreaseStockDTO> decreases = createOrderDto.OrderDetails.Select(x => new DecreaseStockDTO
+            {
+                CatalogItemId = x.ProductId,
+                Quantity = x.ProductQuantity
+            }).ToList();
+            var decreaseStockResult = await _productClient.DecreaseStock(decreases);
+            if (!decreaseStockResult)
+            {
+                throw new OrderingDomainException(3, "创建订单时扣减库存失败");
+            }
 
-
-            var decreaseStockResult = await _productClient.DecreaseStock(createOrderDto.CatalogItemId, createOrderDto.Quantity);
-
-            // 1. 先创建订单
+            // 2. 先创建订单
             var createOrderCommand = _mapper.Map<CreateOrderCommand>(createOrderDto);
             var createOrderResult = await _mediator.Send(createOrderCommand);
 
-            // 2. 订单创建成功后，发布订单创建成功的事件
+            // 3. 订单创建成功后，发布订单创建成功的事件
             if (createOrderResult)
             {
                 var order = await _orderRepository.GetOrderByOrderName(createOrderDto.OrderName!);

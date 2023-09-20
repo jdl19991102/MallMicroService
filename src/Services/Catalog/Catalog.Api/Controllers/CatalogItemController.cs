@@ -63,6 +63,7 @@ namespace Catalog.Api.Controllers
         /// <param name="decreases">扣减集合</param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
+        [HttpPost]
 
         public async Task<bool> DecreaseStock(List<DecreaseStockDTO> decreases)
         {
@@ -89,33 +90,6 @@ namespace Catalog.Api.Controllers
 
                 catalogItem.Stock -= decrease.Quantity;
             }
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
-        /// <summary>
-        /// 扣减库存
-        /// </summary>
-        /// <param name="catalogItemId">商品Id</param>
-        /// <param name="quantity">商品数量</param>
-        /// <returns></returns>
-        [HttpPost]
-        //[Consumes("application/x-www-form-urlencoded")]
-        public async Task<bool> DecreaseStock([FromForm] int catalogItemId, [FromForm] int quantity)
-        {
-            var catalogItem = await _context.CatalogItems.FindAsync(catalogItemId);
-            if (catalogItem == null)
-            {
-                _logger.LogError("CatalogItem with id {catalogItemId} not found.", catalogItem);
-                return false;
-            }
-            // 判断库存是否足够
-            if (catalogItem.Stock < quantity)
-            {
-                return false;
-            }
-
-            catalogItem.Stock -= quantity;
             await _context.SaveChangesAsync();
             return true;
         }
