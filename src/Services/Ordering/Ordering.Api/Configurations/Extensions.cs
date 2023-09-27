@@ -53,7 +53,7 @@ namespace Ordering.Api.Configurations
         {
             services.AddDbContext<OrderingContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")!,
                     sqlServerOptionsAction: sqlOptions =>
                     {
                         // 指定数据库迁移的程序集名称，以便在执行迁移时使用正确的程序集。
