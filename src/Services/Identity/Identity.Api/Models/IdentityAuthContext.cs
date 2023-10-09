@@ -37,6 +37,8 @@ namespace Identity.Api.Models
 
                 entity.Property(e => e.Password).HasMaxLength(50);
 
+                entity.Property(e => e.Phone).HasMaxLength(11);
+
                 entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.UserId).HasMaxLength(50);
