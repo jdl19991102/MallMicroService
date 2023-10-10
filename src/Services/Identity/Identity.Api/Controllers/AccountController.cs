@@ -65,5 +65,17 @@ namespace Identity.Api.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "新增用户失败");
             }
         }
+
+        /// <summary>
+        /// 根据id_token获取用户信息
+        /// </summary>
+        /// <param name="idToken"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public UserInfoResponse GetUserInfoByIdToken(string idToken)
+        {
+            var result = _loginService.GetUserInfoByIdToken(idToken);
+            return result;
+        }
     }
 }

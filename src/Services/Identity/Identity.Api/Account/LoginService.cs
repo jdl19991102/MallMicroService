@@ -28,14 +28,15 @@ namespace Identity.Api.Account
             {
                 return new BaseResponse { Success = false, ErrorMessage = "用户名或密码错误" };
             }
-            var token = GenerateToken(user);
+            var accessToken = GenerateToken(user);
+            var idToken = GenerateIdToken(user);
             var userResult = new LoginResultViewModel
             {
                 UserName = model.Username,
                 UserId = user.UserId,
-                AccessToken = token,
+                AccessToken = accessToken,
                 RefreshToken = "",
-                IdToken = "",
+                IdToken = idToken,
                 AccessTokenExpiration = DateTime.Now.AddDays(Convert.ToDouble(_configuration["Jwt:AccessExpiration"])),
                 RefreshTokenExpiration = DateTime.Now.AddDays(Convert.ToDouble(_configuration["Jwt:RefreshExpiration"])),
                 Roles = new string[] { }
@@ -66,7 +67,7 @@ namespace Identity.Api.Account
 
 
         /// <summary>
-        /// 根据用户信息生成token
+        /// 根据用户信息生成access_token
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
@@ -75,21 +76,74 @@ namespace Identity.Api.Account
             //初始化payload
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.UserName!),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+                new Claim(ClaimTypes.Name, user.UserName)
             };
             //生成对称秘钥
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             //生成签名证书
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var expires = DateTime.Now.AddDays(Convert.ToInt32(_configuration["Jwt:AccessExpiration"]));
-            var token = new JwtSecurityToken(
+            var accessToken = new JwtSecurityToken(
                 issuer: _configuration["Jwt:Issuer"], //设置签发者
                 audience: _configuration["Jwt:Audience"], //设置接收者
                 claims: claims, //设置payload信息
                 expires: expires, //设置过期时间
                 signingCredentials: creds); //安全签名
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return new JwtSecurityTokenHandler().WriteToken(accessToken);
+        }
+
+        /// <summary>
+        /// 根据用户信息生成id_token
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        private string GenerateIdToken(UsersInfo user)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim("sub", user.Id.ToString(),ClaimValueTypes.Integer32),
+                new Claim(ClaimTypes.NameIdentifier, user.UserId),
+                new Claim(ClaimTypes.MobilePhone,user.Phone),
+                new Claim(ClaimTypes.Role,"admin")
+            };
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var expires = DateTime.Now.AddDays(Convert.ToInt32(_configuration["Jwt:IdExpiration"]));
+            var idToken = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"], //设置签发者
+                audience: _configuration["Jwt:Audience"], //设置接收者
+                claims: claims, //设置payload信息
+                expires: expires, //设置过期时间
+                signingCredentials: creds); //安全签名
+            return new JwtSecurityTokenHandler().WriteToken(idToken);
+        }
+
+        /// <summary>
+        /// 根据id_token获取用户信息
+        /// </summary>
+        /// <param name="idToken"></param>
+        /// <returns></returns>
+        internal UserInfoResponse GetUserInfoByIdToken(string idToken)
+        {
+            // 解析id_token
+            var handler = new JwtSecurityTokenHandler();
+            var token = handler.ReadJwtToken(idToken);
+            var claims = token.Claims;
+            var id = int.Parse(claims.FirstOrDefault(c => c.Type == "sub")!.Value);
+            var userName = claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+            var userId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var phone = claims.FirstOrDefault(c => c.Type == ClaimTypes.MobilePhone)?.Value;
+            var role = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+            var userInfo = new UserInfoResponse
+            {
+                Id = id,
+                UserName = userName,
+                UserId = userId,
+                MobilePhone = phone,
+                Role = role
+            };
+            return userInfo;
         }
     }
 }

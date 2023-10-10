@@ -37,6 +37,30 @@ namespace Ordering.Api.Configurations
                     }
                 });
 
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header, //jwt默认存放Authorization信息的位置(请求头中)
+                    Description = "Please enter JWT with Bearer into field",
+                    Name = "Authorization", //jwt默认的参数名称                
+                    Type = SecuritySchemeType.ApiKey
+                });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    // 指定某一个请求用到了哪些安全方案
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Id = "Bearer", // 这个名字要和上面 AddSecurityDefinition 里面的名字一样
+                                Type = ReferenceType.SecurityScheme
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
+
                 var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 Console.WriteLine("xml文件的路径为:{0}", Path.Combine(AppContext.BaseDirectory, xmlFilename));
                 // 第二个参数true表示注释文件包含了控制器的注释

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Orders.Application.DTO;
 using Orders.Application.Interfaces;
@@ -11,6 +12,7 @@ namespace Ordering.Api.Controllers
     /// </summary>
     [Route("[controller]/[action]")]
     [ApiController]
+    [Authorize]
     public class OrdersController : ControllerBase
     {
         private readonly IOrderService _orderService;
