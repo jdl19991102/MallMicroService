@@ -1,4 +1,8 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Identity.Api.Common;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System.Reflection;
 
 namespace Identity.Api.Configurations
@@ -40,6 +44,46 @@ namespace Identity.Api.Configurations
                 //var xmlViewModelFilename = $"{typeof(OrdersViewModel).Assembly.GetName().Name}.xml";
                 //Console.WriteLine("ViewModel的xml文件的路径为:{0}", Path.Combine(AppContext.BaseDirectory, xmlViewModelFilename));
                 //options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlViewModelFilename));
+            });
+        }
+
+        public static void AddFiltersConfiguration(this IServiceCollection services)
+        {
+            if (services == null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
+
+            services.AddControllers(options =>
+            {
+                // 添加全局过滤器
+                options.Filters.Add(typeof(CommonResultFilter));
+                options.Filters.Add(typeof(GlobalExceptionFilterAsync));
+            }).AddNewtonsoftJson(options =>
+            {
+                // 不使用驼峰，返回：UserName
+                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                //忽略NULL值
+                //options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                //忽略循环引用
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                //日期序列化格式
+                options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Local;//指定如何处理日期和时间的时区。我们将其设置为本地时间，即上海时间。
+                options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";//指定日期的格式。
+            })
+            .ConfigureApiBehaviorOptions(options =>
+            {
+                // 自定义验证失败返回结果
+                options.InvalidModelStateResponseFactory = context =>
+                {
+                    var result = new
+                    {
+                        Code = 1,
+                        Data = context.ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage)),
+                        Message = "参数错误"
+                    };
+                    return new BadRequestObjectResult(result);
+                };
             });
         }
     }

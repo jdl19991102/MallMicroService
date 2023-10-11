@@ -10,8 +10,7 @@ namespace Identity.Api.Controllers
     /// 用户处理
     /// </summary>
     [Route("[controller]/[action]")]
-    [ApiController]
-    [AllowAnonymous]
+    [ApiController]   
     public class AccountController : ControllerBase
     {
         private readonly LoginService _loginService;
@@ -39,6 +38,7 @@ namespace Identity.Api.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login(LoginInputDTO model)
         {
@@ -53,6 +53,7 @@ namespace Identity.Api.Controllers
         /// <param name="dto"></param>
         /// <returns></returns>
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> CreateTestUser(CreateTestUserDTO dto)
         {
             var result = await _loginService.CreateTestUser(dto);
