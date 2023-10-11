@@ -27,9 +27,23 @@ namespace Ordering.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IEnumerable<OrdersViewModel>> GetAllOrders([FromBody] GetAllOrdersDTO allOrdersDto)
         {
             var result = await _orderService.GetAllOrders(allOrdersDto);
+            return result;
+        }
+
+
+        /// <summary>
+        /// 测试权限获取单个订单信息
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<OrdersViewModel> GetOdersByOrderId(string orderId)
+        {
+            var result = await _orderService.GetOdersByOrderId(orderId);
             return result;
         }
 

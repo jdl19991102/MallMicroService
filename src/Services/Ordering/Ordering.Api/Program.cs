@@ -25,6 +25,10 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])) //Ç©ÃûÃÜÔ¿
         };
     });
+services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+});
 services.AddDbContexts(builder.Configuration);
 services.AddDependencyInjectionConfiguration();
 services.AddAutoMapperConfiguration();

@@ -28,7 +28,7 @@ namespace Identity.Api.Account
             {
                 return new BaseResponse { Success = false, ErrorMessage = "用户名或密码错误" };
             }
-            var accessToken = GenerateToken(user);
+            var accessToken = GenerateAccessToken(user);
             var idToken = GenerateIdToken(user);
             var userResult = new LoginResultViewModel
             {
@@ -71,12 +71,13 @@ namespace Identity.Api.Account
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        private string GenerateToken(UsersInfo user)
+        private string GenerateAccessToken(UsersInfo user)
         {
             //初始化payload
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.UserName)
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Role,"Admin")
             };
             //生成对称秘钥
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
@@ -105,7 +106,7 @@ namespace Identity.Api.Account
                 new Claim("sub", user.Id.ToString(),ClaimValueTypes.Integer32),
                 new Claim(ClaimTypes.NameIdentifier, user.UserId),
                 new Claim(ClaimTypes.MobilePhone,user.Phone),
-                new Claim(ClaimTypes.Role,"admin")
+                new Claim(ClaimTypes.Role,"test")
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

@@ -87,5 +87,12 @@ namespace Orders.Application.Services
             var result = _mapper.Map<IEnumerable<OrdersViewModel>>(ordersList);
             return result;
         }
+
+        public async Task<OrdersViewModel> GetOdersByOrderId(string orderId)
+        {
+            var order = await _orderRepository.SelectOneAsync(x => x.OrderUniqueId == orderId);
+            var result = _mapper.Map<OrdersViewModel>(order);
+            return result;
+        }
     }
 }

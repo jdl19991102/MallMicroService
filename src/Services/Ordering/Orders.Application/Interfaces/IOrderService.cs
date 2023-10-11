@@ -22,5 +22,6 @@ namespace Orders.Application.Interfaces
         /// </summary>
         /// <returns></returns>
         Task<IEnumerable<OrdersViewModel>> GetAllOrders(GetAllOrdersDTO allOrdersDto);
+        Task<OrdersViewModel> GetOdersByOrderId(string orderId);
     }
 }
