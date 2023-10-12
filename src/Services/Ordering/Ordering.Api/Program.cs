@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Ordering.Api.Configurations;
 using Services.Common;
@@ -25,10 +26,16 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])) //Ç©ÃûÃÜÔ¿
         };
     });
+//services.AddAuthorization(options =>
+//{
+//    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+//});
 services.AddAuthorization(options =>
 {
-    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("CustomPolicy", policy =>
+        policy.Requirements.Add(new CustomRequirement("wangwu")));
 });
+services.AddSingleton<IAuthorizationHandler, TestAuthorizationHandler>();
 services.AddDbContexts(builder.Configuration);
 services.AddDependencyInjectionConfiguration();
 services.AddAutoMapperConfiguration();

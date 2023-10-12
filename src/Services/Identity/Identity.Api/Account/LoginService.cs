@@ -103,7 +103,7 @@ namespace Identity.Api.Account
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.UserName),
-                new Claim("sub", user.Id.ToString(),ClaimValueTypes.Integer32),
+                new Claim("sub", user.Id.ToString(),ClaimValueTypes.Integer32), // 测试jwt使用int类型的数据
                 new Claim(ClaimTypes.NameIdentifier, user.UserId),
                 new Claim(ClaimTypes.MobilePhone,user.Phone),
                 new Claim(ClaimTypes.Role,"test")

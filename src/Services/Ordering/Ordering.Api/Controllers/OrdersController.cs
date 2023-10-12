@@ -27,7 +27,7 @@ namespace Ordering.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        [Authorize(Policy = "AdminOnly")]
+        [Authorize(Policy = "CustomPolicy")]
         public async Task<IEnumerable<OrdersViewModel>> GetAllOrders([FromBody] GetAllOrdersDTO allOrdersDto)
         {
             var result = await _orderService.GetAllOrders(allOrdersDto);
