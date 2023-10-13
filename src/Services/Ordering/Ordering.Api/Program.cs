@@ -35,7 +35,7 @@ services.AddAuthorization(options =>
     options.AddPolicy("CustomPolicy", policy =>
         policy.Requirements.Add(new CustomRequirement("wangwu")));
 });
-services.AddSingleton<IAuthorizationHandler, TestAuthorizationHandler>();
+services.AddSingleton<IAuthorizationHandler, CustomAuthorizationHandler>();
 services.AddDbContexts(builder.Configuration);
 services.AddDependencyInjectionConfiguration();
 services.AddAutoMapperConfiguration();

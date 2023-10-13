@@ -14,11 +14,6 @@ namespace Ordering.Api.Configurations
                     Console.WriteLine("进入自定义策略授权01.。。。");
                     context.Succeed(testRequirement);
                 }
-                else if (testRequirement.myName == "zhangsan")
-                {
-                    Console.WriteLine("进入自定义策略授权02.。。。");
-                    context.Succeed(testRequirement);
-                }
                 else
                 {
                     context.Fail();
@@ -27,12 +22,8 @@ namespace Ordering.Api.Configurations
             var requirement = context.Requirements;
             var user = context.User;
             var resource = context.Resource;
-            var pendingRequirements = context.PendingRequirements.ToList();
-            //if (testRequirement != null)
-            //{
-            //    context.Succeed(testRequirement);
-            //}
-            return Task.CompletedTask;
+            var pendingRequirements = context.PendingRequirements.ToList();       
+            return Task.CompletedTask;  // 直接这么返回，会返回 403
         }
     }
 }
