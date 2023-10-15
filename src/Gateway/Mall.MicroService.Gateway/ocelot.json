@@ -1,0 +1,23 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/{url}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7040
+        }
+      ],
+      "UpstreamPathTemplate": "/orders/{url}",
+      "UpstreamHttpMethod": [ "Get", "POST", "DELETE", "PUT" ]
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:7153"
+  }
+}

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Ordering.Api.Configurations
 {
@@ -11,7 +12,16 @@ namespace Ordering.Api.Configurations
             {
                 Console.WriteLine("进入自定义策略授权01...");
                 // 执行相关的鉴权逻辑
-                flag = true;
+
+                //取出来相关的claims
+                var claims = context.User.Claims;
+                //取出来相关的角色
+                var roles = claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value).ToList();
+                // 如果roles包含Admin，那么就通过
+                if (roles.Contains("Admin"))
+                {
+                    flag = true;
+                }
             }
             if (requirement.myName == "zhangsan")
             {
