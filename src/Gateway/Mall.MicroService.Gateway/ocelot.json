@@ -10,11 +10,11 @@
         }
       ],
       "UpstreamPathTemplate": "/orders/{url}",
-      "UpstreamHttpMethod": [ "Get", "POST", "DELETE", "PUT" ]
-      //"AuthenticationOptions": {
-      //  "AuthenticationProviderKey": "Bearer",
-      //  "AllowedScopes": []
-      //}
+      "UpstreamHttpMethod": [ "Get", "POST", "DELETE", "PUT" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "UserIdentity",
+        "AllowedScopes": []
+      }
     }
   ],
   "GlobalConfiguration": {

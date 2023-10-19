@@ -7,9 +7,13 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer("Bearer", options =>
-    {
+// 第一种写法
+//builder.Configuration.AddJsonFile("ocelot.json", optional: true, reloadOnChange: true);
+//builder.Services.AddOcelot();
+
+builder.Services.AddAuthentication()
+    .AddJwtBearer("UserIdentity", options =>
+    {       
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true, //是否在令牌期间验证签发者
