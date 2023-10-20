@@ -40,4 +40,4 @@ This project draws on the following two excellent projects:
 
 
 ## About
-The MallMicroService Project under the MIT license.
+The MallMicroService Project under the Apache-2.0 license.
