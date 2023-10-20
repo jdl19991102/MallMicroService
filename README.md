@@ -33,8 +33,8 @@ If you have any questions, please feel free to communicate and raise Issus and P
 
 ## Refer to
 This project draws on the following two excellent projects:
-**eShopOnContainers**: https://github.com/dotnet-architecture/eShopOnContainers.git
 
+**eShopOnContainers**: https://github.com/dotnet-architecture/eShopOnContainers.git
 
 **EquinoxProject**: https://github.com/EduardoPires/EquinoxProject.git
 
