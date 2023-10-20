@@ -1,2 +1,5 @@
 # MallMicroService
-基于.NET 6 开发的一个简单商城微服务架构体系。包含了DDD、CQRS、Ocelot、IdentityServer4、RabbitMQ、EventBus等，同时支持Docker、Jenkins自动化CI/CD等。
+A simple mall microservice architecture based on.NET 6. It includes DDD, CQRS, Ocelot, Token-based, RabbitMQ, EventBus, etc., and supports Docker, Jenkins automation CI/CD, etc.
+
+
+Give a Star!
