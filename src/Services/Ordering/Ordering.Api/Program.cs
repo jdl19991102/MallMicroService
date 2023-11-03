@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Ordering.Api.Configurations;
+using Prometheus;
 using Services.Common;
 using System.Text;
 
@@ -49,6 +50,10 @@ var app = builder.Build();
 app.UseServiceDefaults();
 
 app.UseMySwagger();
+
+app.UseMetricServer();
+
+app.UseHttpMetrics();
 
 app.UseHttpsRedirection();
 
